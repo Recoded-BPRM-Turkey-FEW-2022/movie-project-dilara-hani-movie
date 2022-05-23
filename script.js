@@ -4,6 +4,7 @@ const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 const BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w780";
 const CONTAINER = document.querySelector("#page-content"); // changed class name .container to id #page-content
+CONTAINER.classList = ("container-content container-fluid d-flex flex-row flex-wrap justify-content-center text-center mt-4")
 
 // Don't touch this function please
 const autorun = async () => {
@@ -42,11 +43,21 @@ const fetchMovie = async (movieId) => {
 const renderMovies = (movies) => {
   movies.map((movie) => {
     const movieDiv = document.createElement("div");
+    movieDiv.classList =("col-lg-3 col-md-4 col-sm-12 m-3 p-0 d-flex flex-column")
+    movieDiv.id =("movieDivCard")
     movieDiv.innerHTML = `
-        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
+    <div class="card w-100 h-100" id="movieCards">
+      <img class="card-img-top" src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
-        <h3>${movie.title}</h3>`;
+      <h3>${movie.title}</h3>
+      <div class="card-body" id="movieOverview">
+        <h4 id="overview">Overview</h4>
+        <p> ${movie.overview}</p>
+      </div>
+    </div>
+        `;
+        
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
