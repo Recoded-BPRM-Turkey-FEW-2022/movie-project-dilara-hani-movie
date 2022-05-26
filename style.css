@@ -15,14 +15,21 @@ body {
 }
 
 #movieDivCard {
-    width: 30%;
-    height: 18rem;
+    width: 350px;
     margin: 2rem 0;
- 
 }
+
 #movieCards {
     overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
+
+#movieCards:hover {
+    cursor: pointer;
+}
+    
 
 #movieCards:hover #movieOverview  {
     transform: translateY(0);
