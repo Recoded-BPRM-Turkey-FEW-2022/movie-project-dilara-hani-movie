@@ -286,6 +286,73 @@ const renderActor = (actor, cred) => {
     }
 };
 
+////filter button with dropdown list////
+///first: top rated movies///////
+
+const topRatedButton= document.getElementById("top-rated")
+
+const fetchTopRated = async () => {
+  const url = constructUrl(`movie/top_rated`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const topDetail = async () => {
+  const topRatedRes = await fetchTopRated();
+  renderTopRated(topRatedRes);
+};
+topDetail()
+const renderTopRated=(movie)=>{
+  topRatedButton.addEventListener("click",()=>{
+    CONTAINER.innerHTML="";
+    renderMovies(movie.results);
+  })
+}
+
+///second: upcoming movies///////
+
+const upcomingButton= document.getElementById("upcoming")
+
+const fetchUpcoming = async () => {
+  const url = constructUrl(`movie/upcoming`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const upcomingDetail = async () => {
+  const upcomingRes = await fetchUpcoming();
+  renderUpcoming(upcomingRes);
+};
+upcomingDetail()
+const renderUpcoming=(movie)=>{
+  upcomingButton.addEventListener("click",()=>{
+    CONTAINER.innerHTML="";
+    renderMovies(movie.results);
+  })
+}
+
+///third: popular movies///////
+
+const popularButton= document.getElementById("popular")
+
+const fetchPopular = async () => {
+  const url = constructUrl(`movie/popular`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const popularDetail = async () => {
+  const popularRes = await fetchPopular();
+  renderPopular(popularRes);
+};
+popularDetail()
+const renderPopular=(movie)=>{
+  popularButton.addEventListener("click",()=>{
+    CONTAINER.innerHTML="";
+    renderMovies(movie.results);
+  })
+}
+
 // HOME BUTTON FUNCTIONALITY
 const homeButton = async () => {
   CONTAINER.innerHTML="";
