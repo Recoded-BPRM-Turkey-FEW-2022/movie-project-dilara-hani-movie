@@ -1,7 +1,7 @@
 body {
     background-color: black;
-    
 }
+
 #movie-backdrop {
     width: 100%;
 }
@@ -136,4 +136,33 @@ body {
     max-height:100%;
     transform: translateY(101%);
     transition: transform 0.3s ease-in;
+}
+#about-page {
+    color: white;
+    text-align: left;
+    font-size: medium;
+    background-image: url(aboutpage.png);
+    background-size: cover;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    margin:0;
+ 
+}
+#about-page div {
+    width: 50%;
+}
+@media screen and (max-width:768px) {
+    #about-page {
+        background-image: url("#");
+        align-items:center;
+        height: 100%;
+        width: 80%;
+        
+    }
+    #about-page div {
+        width: 100%;
+    }
 }
