@@ -38,6 +38,8 @@ searchButton.addEventListener("click", async (e) =>{ // without async await the 
   CONTAINER.innerHTML ="";
   renderMovies(movies.results)
   // searchUrl(query)
+  console.log("movies",movies)
+  console.log("movies.resukts", movies.results)
 })
 
 const searchMovies = async (query) => {
@@ -52,30 +54,90 @@ const searchMovies = async (query) => {
 // MOVIES PAGE
 const renderMovies = (movies) => {
   movies.map((movie) => {
+
     const movieDiv = document.createElement("div");
     movieDiv.classList =("col-lg-3 col-md-4 col-sm-12 m-3 p-0 d-flex flex-column")
     movieDiv.id =("movieDivCard")
+   //IF ACTOR
+    if(movie.title === undefined && movie.poster_path === undefined) { //if there is no "title" key in the object
+      movieDiv.addEventListener("click", async () => {
+        console.log(movie.id)
+        const res = await fetchCreditss(movie.id)
+        renderActor(movie, res)
+      });
     movieDiv.innerHTML = `
     <div class="card w-100 h-100" id="movieCards">
-      <img class="card-img-top" src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title} poster">
+      <img class="card-img-top" src="${BACKDROP_BASE_URL + movie.profile_path}" alt="${movie.name} poster">
 
-        <h4>${movie.title}</h4>
-           
+        <h4 class="movieTitle">${movie.name}</h4>
+        <span class="${voteColor(movie.vote_average)} rounded-right text-light ">Actor</span>
+      <div class="card-body" id="movieOverview">
+        <h4 id="overview">KNOWN FOR DEPARTMENT</h4>
+        <p> ${movie.known_for_department}</p>
+      </div>
+    </div>
+        `;
+        
+    } else if(movie.title === undefined) { //IF MOVIE BUT NO TITLE, IT HAS NAME KEY
+      movieDiv.addEventListener("click", () => {
+        movieDetails(movie);
+      });
+      movieDiv.innerHTML = `
+    <div class="card w-100 h-100" id="movieCards">
+      <img class="card-img-top" src="${BACKDROP_BASE_URL + movie.poster_path}" alt="${movie.title} poster">
+
+        <h4 class="movieTitle">${movie.name}</h4>
+        <span class="${voteColor(movie.vote_average)} rounded-right text-light ">${movie.vote_average}</span>
+
       <div class="card-body" id="movieOverview">
         <h4 id="overview">Overview</h4>
         <p> ${movie.overview}</p>
       </div>
     </div>
         `;
-        
-    movieDiv.addEventListener("click", () => {
-      movieDetails(movie);
-    });
+    } else { //IF IT IS A MOVIE BUT HAVING TITLE
+      movieDiv.addEventListener("click", () => {
+        movieDetails(movie);
+      });
+    movieDiv.innerHTML = `
+    <div class="card w-100 h-100" id="movieCards">
+      <img class="card-img-top" src="${BACKDROP_BASE_URL + movie.poster_path}" alt="${movie.title} poster">
+
+        <h4 class="movieTitle">${movie.title}</h4>
+        <span class="${voteColor(movie.vote_average)} rounded-right text-light ">${movie.vote_average}</span>
+
+      <div class="card-body" id="movieOverview">
+        <h4 id="overview">Overview</h4>
+        <p> ${movie.overview}</p>
+      </div>
+    </div>
+        `;
+    }
+    
+    // movieDiv.addEventListener("click", () => {
+    //   movieDetails(movie);
+    // });
     CONTAINER.appendChild(movieDiv);
   });
-};
 
-
+}
+// COLOR INDICATOR FOR VOTE AVERAGE AND BEING ACTOR
+function voteColor(voteAvg){
+  if( voteAvg === undefined) { // IT IS AN ACTOR
+    return "bg-dark"
+  }
+  else if(voteAvg>=7) {
+    return "bg-success"
+  }
+  else if (voteAvg<7 && voteAvg>=6) {
+    return "bg-primary"
+  }
+  else if( voteAvg<6 && voteAvg>=4) {
+    return "bg-warning"
+  } else{
+    return "bg-danger"
+  }
+}
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
@@ -110,13 +172,8 @@ const renderMovie = (movie, credit) => {
   console.log(movie.genres[0].id);
   const movieGenresArray= movie.genres
   console.log(movieGenresArray);
-  const genreNames= movieGenresArray.map(genre =>
-    genre.name
-    )
-    const names = genreNames.toString().split(",").join(" , ")
-
-  // const names= genreNames.toString(",").join(" , ")
-  // console.log(genreNames);
+  const genreNames= movieGenresArray.map(genre => genre.name)
+  const names = genreNames.toString().split(",").join(" , ")
 
   CONTAINER.innerHTML = `
     <div class="row m-30 text-white text-start" id="movie-page">
@@ -176,6 +233,7 @@ const renderMovie = (movie, credit) => {
 const actorDetails = async (actor) => {
   const actorRes = await fetchActor(actor.id);
   const credRes = await fetchCreditss(actor.id);
+  console.log(credRes)
   renderActor(actorRes, credRes);
 };
 
