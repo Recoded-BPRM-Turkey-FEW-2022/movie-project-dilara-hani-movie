@@ -14,6 +14,15 @@ body {
     cursor:pointer;
     transition: 0.2s;   
 }
+#movieCards span {
+    background: transparent;
+    width: 25%;
+    font-weight: bolder;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 #movieDivCard:hover{
     transform: scale(1.05);
     transition-timing-function: ease-in;  
