@@ -10,8 +10,90 @@ body {
     padding-top: 32px;
 } */
 
-#actors {
-    margin: 24px 16px 0 0;
+#movieDivCard{
+    cursor:pointer;
+    transition: 0.2s;   
+}
+#movieDivCard:hover{
+    transform: scale(1.05);
+    transition-timing-function: ease-in;  
+}
+/* .container {
+    padding-top: 32px;
+} */
+#single-movie-card{
+    width: 25vh;
+    display: flex;
+    flex-direction: row;
+    margin: 5px 5px 0 0; 
+    cursor: pointer; 
+    transition: 0.2s;
+}
+
+#single-movie-card:hover{
+    background-color: #f3f3f3;
+    transform: scale(1.05);
+    transition-timing-function: ease-in;
+    opacity: 0.8;
+}
+
+#single-movie-card img{
+    border-radius: 5px;
+}
+
+#single-movie-card p{
+    font-size: x-large;
+}
+
+#actors-cards {
+    width: 25vh;
+    display: flex;
+    flex-direction: row;
+    margin: 5px 5px 0 0;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#actors-cards:hover{
+    background-color: #f3f3f3;
+    transform: scale(1.05);
+    transition-timing-function: ease-in;
+    opacity: 0.7;
+}
+
+#actorDivCard{
+    cursor:pointer;
+    transition: 0.2s; 
+}
+
+#actorDivCard:hover{
+    transform: scale(1.05);
+    transition-timing-function: ease-in;    
+}
+
+#actors-cards img {
+    border-radius: 5px;
+}
+#actors-cards p{
+    font-size: x-large;
+}
+#movie-backdrop{
+    width: 90%;
+    border-radius: 20px;
+}
+#movie-credit{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;   
+}
+#actors{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 #movieDivCard {
