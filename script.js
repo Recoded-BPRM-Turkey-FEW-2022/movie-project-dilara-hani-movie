@@ -411,6 +411,25 @@ const renderPopular=(movie)=>{
   })
 }
 
+// NAVBAR ABOUT PAGE FUNCTIONALITY
+const aboutPage = () => {
+  CONTAINER.innerHTML="";
+  CONTAINER.innerHTML= `
+  <div class="container-fluid" id="about-page">
+  <div class="d-flex flex-column">
+      <p>This project has been done by using TMDB API in Re:Coded Front End Bootcamp</p>
+      <p><b><a class="nav-link" href="https://www.themoviedb.org/documentation/api#:~:text=What%20is%20TMDB's%20API%3F,our%20data%20and%2For%20images." target="_blank">TMDB API</a></b></p>
+      <p>The TMDB's API service is for those of who are interested in using movie, TV show or actor images and/or data that can be programmatically fetched for website applications.</p>
+  </div>
+  <div class="d-flex flex-column">
+      <p><b><a class="nav-link" href="https://www.re-coded.com/" target="_blank">RE:CODED</a></b></p>
+      <p>Re:Coded's goal is to unlock human potential and open doors to the digital economy, regardless of circumstance. Re:Coded offer transformative learning experiences for under-represented talent and provide them with the skills, resources and networks to launch new in-demand careers in tech</p>
+  </div>
+  </div>
+   `;
+}
+
+
 // HOME BUTTON FUNCTIONALITY
 const homeButton = async () => {
   CONTAINER.innerHTML="";
