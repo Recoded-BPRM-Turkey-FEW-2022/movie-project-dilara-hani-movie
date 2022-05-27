@@ -79,7 +79,8 @@ const renderMovies = (movies) => {
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
-  renderMovie(movieRes);
+  const creditRes= await fetchCredit (movie.id); ///added line to get response of fetching credits
+  renderMovie(movieRes, creditRes); 
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
@@ -96,29 +97,79 @@ const fetchMovie = async (movieId) => {
   return res.json();
 };
 
+////fetch credits to add cast to the movie page /////
+
+const fetchCredit= async (movieId)=>{
+  const url2= constructUrl(`movie/${movieId}/credits`);
+  const res2 = await fetch (url2);
+  return res2.json();
+}
+
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movie) => {
+const renderMovie = (movie, credit) => {
+  console.log(movie.genres[0].id);
+  const movieGenresArray= movie.genres
+  console.log(movieGenresArray);
+  const genreNames= movieGenresArray.map(genre =>
+    genre.name
+    )
+    const names = genreNames.toString().split(",").join(" , ")
+
+  // const names= genreNames.toString(",").join(" , ")
+  // console.log(genreNames);
+
   CONTAINER.innerHTML = `
-    <div class="row">
-        <div class="col-md-4">
-             <img id="movie-backdrop" src=${
-               BACKDROP_BASE_URL + movie.backdrop_path
-             }>
+    <div class="row m-30 text-white text-start" id="movie-page">
+        <div class="col-md-5">
+            <img id="movie-backdrop" src=${
+              BACKDROP_BASE_URL + movie.backdrop_path
+            }>
         </div>
-        <div class="col-md-8">
-            <h2 id="movie-title">${movie.title}</h2>
-            <p id="movie-release-date"><b>Release Date:</b> ${
-              movie.release_date
-            }</p>
-            <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
-            <h3>Overview:</h3>
-            <p id="movie-overview">${movie.overview}</p>
-        </div>
-        </div>
-            <h3>Actors:</h3>
-            <ul id="actors" class="list-unstyled"></ul>
+        <div class="col-md-6">
+          <h2 id="movie-title">${movie.title}</h2>
+          <p id="movie-release-date"><b>Release Date:</b> ${
+            movie.release_date
+          }</p>
+          <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
+          <h4>Overview:</h4>
+          <p id="movie-overview">${movie.overview}</p>
+          <h4>Genres:</h4>
+          <p id="movie-genres" class="text-secondary"> ${names}</p>
+        </div> 
     </div>`;
-};
+    // actor credit part
+    const actorsCreditPart= document.createElement("div");
+    actorsCreditPart.id= "actors"
+    const actorHeader= document.createElement("h3");
+    actorHeader.innerText= "Actors:"
+    actorHeader.classList= "text-white mt-4"
+    actorsCreditPart.classList= "row m-20";
+    for (let i=0; i<5; i++){
+      const movieAcotrCard= document.createElement("div");
+      movieAcotrCard.id= "actors-cards"
+      movieAcotrCard.classList= "card col-lg-3 col-md-4 col-sm-12 m-3 p-0 d-flex flex-column";
+      const cardImg= document.createElement("img");
+      cardImg.classList= "single-actor-img"
+      cardImg.src=`${PROFILE_BASE_URL + credit.cast[i].profile_path}`;
+      const cardTitle= document.createElement("p");
+      cardTitle.innerText= `${credit.cast[i].name}`;
+      movieAcotrCard.appendChild(cardImg);
+      movieAcotrCard.appendChild(cardTitle);
+    
+      CONTAINER.appendChild(actorHeader)
+      actorsCreditPart.appendChild(movieAcotrCard)
+      CONTAINER.appendChild(actorsCreditPart)
+      const actorCards= document.querySelectorAll(".single-actor-img");
+      actorCards.forEach(actorCard => {
+      actorCard.addEventListener("click",async()=>{
+        const res1=await fetchActor(credit.cast[i].id)
+        console.log(res1)
+        const res2=await fetchCreditss(credit.cast[i].id)
+        renderActor(res1, res2);
+      })
+      })
+  }
+  };
 
 // HOME BUTTON FUNCTIONALITY
 const homeButton = async () => {
