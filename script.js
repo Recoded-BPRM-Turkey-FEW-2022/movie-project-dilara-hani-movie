@@ -133,4 +133,53 @@ const autorun = async () => {
   renderMovies(movies.results);
 };
 
+////// genre fetching and making a dropdown list////
+
+const genreList= document.getElementById("genreDropdown")
+
+const fetchGenres = async () => {
+  const url = constructUrl(`genre/movie/list`);
+  const res = await fetch(url);
+  // console.log(res.json())
+  return res.json();
+};
+
+const fetchGen = async (gen) => {
+  const genreURL= `${constructUrl(`discover/movie`)}&with_genres=${gen}`;
+  const res= await fetch(genreURL)
+  return res.json()
+  // console.log(genreURL);
+};
+
+const genresDetailllll = async (genId) => {
+  const genRes = await fetchGen(genId);
+  // console.log(genRes)
+  CONTAINER.innerHTML="";
+  renderMovies(genRes.results);
+};
+
+const genresDetails = async () => {
+  const genRes = await fetchGenres();
+  renderGenres(genRes);
+};
+genresDetails()
+const renderGenres = (genres) => {
+  for (let genre of Object.keys(genres)){
+    let genIter= genres[genre];
+    genIter.map((gen)=>{
+      const genreItem= document.createElement("li");
+      const genreAnch= document.createElement("a");
+      genreItem.appendChild(genreAnch);
+      genreAnch.classList= ("dropdown-item")
+      genreAnch.id= gen.id;
+      genreAnch.href= ("#")
+      genreAnch.innerText= gen.name;
+      genreAnch.addEventListener("click",async()=>{
+        genresDetailllll(gen.id)
+      })
+      genreList.appendChild(genreItem)
+    })
+  }
+  };
+
 document.addEventListener("DOMContentLoaded", autorun);
