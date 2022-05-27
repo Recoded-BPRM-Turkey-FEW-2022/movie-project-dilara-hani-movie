@@ -171,6 +171,61 @@ const renderMovie = (movie, credit) => {
   }
   };
 
+ /////fetching actors and creating actors page/////
+
+const actorDetails = async (actor) => {
+  const actorRes = await fetchActor(actor.id);
+  const credRes = await fetchCreditss(actor.id);
+  renderActor(actorRes, credRes);
+};
+
+const fetchActors = async () => {
+  const url = constructUrl(`person/popular`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const fetchActor = async (actorId) => {
+  const url = constructUrl(`person/${actorId}`);
+  const res = await fetch(url);
+  // console.log(res.json())
+  return res.json();
+};
+
+const actorList= document.getElementById('actor-list')
+actorList.addEventListener('click',async ()=>{
+  const actors = await fetchActors();
+renderActors(actors.results);
+})
+
+
+const fetchCreditss= async (actorId)=>{
+  const url3= constructUrl(`person/${actorId}/movie_credits`);
+  const res3 = await fetch (url3);
+  return res3.json();
+}
+
+// this function to render entire actors page //
+const renderActors = (actors) => {
+  CONTAINER.innerHTML=""
+  actors.map((actor) => {
+    const actorDiv = document.createElement("div");
+    actorDiv.classList =("col-lg-2 col-md-3 col-sm-4 m-3 p-0 d-flex flex-column")
+    actorDiv.id =("actorDivCard")
+    actorDiv.innerHTML = `
+    <div class="card w-100 h-100" id="movieCards">
+      <img class="card-img-top" src="${PROFILE_BASE_URL + actor.profile_path}">
+      <h3 class="card-title">${actor.name}</h3>
+      </div>
+    </div>
+        `;
+      actorDiv.addEventListener("click", () => {
+      actorDetails(actor);
+    });
+    CONTAINER.appendChild(actorDiv);
+  });
+};
+ 
 // HOME BUTTON FUNCTIONALITY
 const homeButton = async () => {
   CONTAINER.innerHTML="";
