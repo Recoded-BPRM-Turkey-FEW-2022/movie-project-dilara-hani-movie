@@ -226,6 +226,66 @@ const renderActors = (actors) => {
   });
 };
  
+// this function to render single actor page //
+const renderActor = (actor, cred) => {
+  // console.log(actor)
+  // console.log(cred)
+  let actorGender= ""
+  if(actor.gender===1){actorGender="Female"}else if (actor.gender===2){actorGender="Male"}
+  CONTAINER.innerHTML = `
+    <div class="row m-30 text-white text-start" id="actor-page">
+      <div class="col-md-3 profile">
+            <img id="movie-backdrop" src=${
+              PROFILE_BASE_URL + actor.profile_path}>
+        </div>
+        <div class="col-md-7 details">
+            <h2 id="movie-title">${actor.name}</h2>
+            <p>${actor.biography}</p>
+            <h3>Birthday:</h3>
+            <p>${actor.birthday}</p>
+            <h3>Gender:</h3>
+            <p>${actorGender}</p>
+            <h3>Popularity:</h3>
+            <p>${actor.popularity}</p>
+        </div>
+    </div>`;
+    //movie credits part
+    const movieCreditPart= document.createElement("div");
+    movieCreditPart.classList= " col-md-4"
+    movieCreditPart.id= "movie-credit"
+    const movieHeader= document.createElement("h3");
+    movieHeader.innerText= "Movies:";
+    movieHeader.classList= "text-white mt-4"
+    for (let i=0; i<5; i++){
+      const actorMoviesCard= document.createElement("div");
+      actorMoviesCard.classList=("")
+      const singleMovieCard= document.createElement("div");
+      singleMovieCard.id= "single-movie-card"
+      singleMovieCard.classList=("single-movie-card card col-lg-4 col-md-4 col-sm-12 m-3 p-0 d-flex flex-column");
+      const movieTitle= document.createElement("p");
+      movieTitle.innerText= `${cred.cast[i].title}`;
+      const movieImg= document.createElement("img");
+      movieImg.src=`${BACKDROP_BASE_URL + cred.cast[i].poster_path}`;
+      singleMovieCard.appendChild(movieImg);
+      singleMovieCard.appendChild(movieTitle);
+      actorMoviesCard.appendChild(singleMovieCard)
+
+      CONTAINER.appendChild(movieHeader)
+      movieCreditPart.appendChild(actorMoviesCard)
+      CONTAINER.appendChild(movieCreditPart)
+      
+      const MovieCards= document.querySelectorAll(".single-movie-card");
+      MovieCards.forEach(card=>{
+        card.addEventListener("click",async()=>{
+          const res1=await fetchMovie(cred.cast[i].id)
+          console.log(res1)
+          const res2=await fetchCredit(cred.cast[i].id)
+          renderMovie(res1, res2);
+        })
+      })
+    }
+};
+
 // HOME BUTTON FUNCTIONALITY
 const homeButton = async () => {
   CONTAINER.innerHTML="";
